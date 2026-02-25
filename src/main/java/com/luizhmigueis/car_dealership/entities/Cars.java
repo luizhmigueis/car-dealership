@@ -1,24 +1,30 @@
 package com.luizhmigueis.car_dealership.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Data
 @Table(name="cars")
 public class Cars {
 
     @Id
-    private UUID id;
+    @GeneratedValue
+    private Long id;
+    @Column(unique = true)
+    private String carLicensePlate;
+    private String ownerName;
     private String brand;
     private String model;
     private Integer yearModel;
     private String color;
+    private Double kilometers;
 
 
 }
