@@ -1,7 +1,7 @@
 package com.luizhmigueis.car_dealership.controllers;
 
 
-import com.luizhmigueis.car_dealership.entities.Cars;
+import com.luizhmigueis.car_dealership.entities.Car;
 import com.luizhmigueis.car_dealership.repositories.CarsRepository;
 import com.luizhmigueis.car_dealership.services.CarsService;
 import lombok.RequiredArgsConstructor;
@@ -21,18 +21,18 @@ public class CarsController {
     private final CarsRepository carsRepository;
 
     @PostMapping
-    public ResponseEntity<Void> saveCar(@RequestBody Cars car){
+    public ResponseEntity<Void> saveCar(@RequestBody Car car){
         carsService.saveCar(car);
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity<Cars> findByPlate(@RequestParam String carLicensePlate){
+    public ResponseEntity<Car> findByPlate(@RequestParam String carLicensePlate){
 
         return ResponseEntity.ok(carsService.findByPlate(carLicensePlate));
     }
     @GetMapping("/allcars")
-    public Page<Cars> getCars(Pageable pageable){
-        List<Cars> list = carsService.findAll();
+    public Page<Car> getCars(Pageable pageable){
+        List<Car> list = carsService.findAll();
         return carsRepository.findAll(pageable);
     }
     @DeleteMapping
@@ -41,7 +41,7 @@ public class CarsController {
         return ResponseEntity.ok().build();
     }
     @PutMapping
-    public ResponseEntity<Void> updateCarById(@RequestParam Long id, @RequestBody Cars car){
+    public ResponseEntity<Void> updateCarById(@RequestParam Long id, @RequestBody Car car){
         carsService.updateCarById(id, car);
         return ResponseEntity.ok().build();
     }

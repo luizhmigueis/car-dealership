@@ -1,7 +1,7 @@
 package com.luizhmigueis.car_dealership.services;
 
 
-import com.luizhmigueis.car_dealership.entities.Cars;
+import com.luizhmigueis.car_dealership.entities.Car;
 import com.luizhmigueis.car_dealership.repositories.CarsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ public class CarsService {
     @Autowired
     private CarsRepository repository;
 
-    public void saveCar(Cars car){
+    public void saveCar(Car car){
         repository.saveAndFlush(car);
     }
-    public List<Cars> findAll(){
+    public List<Car> findAll(){
         return repository.findAll();
     }
 
-    public Cars findByPlate(String carLicensePlate){
+    public Car findByPlate(String carLicensePlate){
         return repository.findByCarLicensePlate(carLicensePlate).orElseThrow(
                 () -> new RuntimeException("Car license plate not found")
         );
@@ -29,9 +29,9 @@ public class CarsService {
     public void deleteCarByCarLicensePlate (String carLicensePlate){
         repository.deleteByCarLicensePlate(carLicensePlate);
     }
-    public void updateCarById (Long id, Cars car){
-        Cars carEntity = repository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado"));
-        Cars carUpdated = Cars.builder()
+    public void updateCarById (Long id, Car car){
+        Car carEntity = repository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+        Car carUpdated = Car.builder()
                 .id(carEntity.getId())
                 .carLicensePlate(car.getCarLicensePlate() != null ? car.getCarLicensePlate() : carEntity.getCarLicensePlate())
                 .brand(car.getBrand() != null ? car.getBrand() : carEntity.getBrand())

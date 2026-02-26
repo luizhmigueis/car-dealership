@@ -1,7 +1,6 @@
 package com.luizhmigueis.car_dealership.controllers;
 
-import com.luizhmigueis.car_dealership.entities.Cars;
-import com.luizhmigueis.car_dealership.entities.Owners;
+import com.luizhmigueis.car_dealership.entities.Owner;
 import com.luizhmigueis.car_dealership.repositories.OwnersRepository;
 import com.luizhmigueis.car_dealership.services.OwnersService;
 import lombok.RequiredArgsConstructor;
@@ -22,25 +21,20 @@ public class OwnersController {
 
 
     @PostMapping
-    public ResponseEntity<Void> saveOwner(@RequestBody Owners owner){
+    public ResponseEntity<Void> saveOwner(@RequestBody Owner owner){
         ownersService.saveOwner(owner);
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity<Owners> findByDriversLicense(@RequestParam Long driversLicense){
+    public ResponseEntity<Owner> findByDriversLicense(@RequestParam Long driversLicense){
 
         return ResponseEntity.ok(ownersService.findByDriversLicense(driversLicense));
     }
-    @GetMapping("/allowners")
-    public Page<Owners> getOwners(Pageable pageable){
-        List<Owners> list = ownersService.findAll();
-        return ownersRepository.findAll(pageable);
+    @GetMapping("/with-cars")
+    public ResponseEntity<List<Owner>> getAllWithCars() {
+        List<Owner> owners = ownersService.findAll();
+        return ResponseEntity.ok(owners);
     }
-
-
-    //Parei aqui, trocando os cars, Cars para Owners owners
-
-
 
     @DeleteMapping
     public ResponseEntity<Void> deleteByDriversLicense(@RequestParam Long driversLicense){
@@ -48,7 +42,7 @@ public class OwnersController {
         return ResponseEntity.ok().build();
     }
     @PutMapping
-    public ResponseEntity<Void> updateOwnerByDriversLicense(@RequestParam Long driversLicense, @RequestBody Owners owner){
+    public ResponseEntity<Void> updateOwnerByDriversLicense(@RequestParam Long driversLicense, @RequestBody Owner owner){
         ownersService.updateOwnerByDriversLicense(driversLicense, owner);
         return ResponseEntity.ok().build();
     }

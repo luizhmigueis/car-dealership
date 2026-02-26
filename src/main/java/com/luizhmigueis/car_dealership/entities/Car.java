@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,7 +11,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name="cars")
-public class Cars {
+public class Car {
 
     @Id
     @GeneratedValue
@@ -29,12 +25,7 @@ public class Cars {
     private Double kilometers;
 
     @ManyToOne
-    @JoinColumn(name = "owners_id")
+    @JoinColumn(name = "owner_id")
     @JsonBackReference
-    private Owners owners;
-
-
-
-
-
+    private Owner owner;
 }

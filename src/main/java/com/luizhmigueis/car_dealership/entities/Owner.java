@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Owners {
+public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,7 @@ public class Owners {
     @Column(unique = true)
     private Long driversLicense;
 
-    @OneToMany(mappedBy = "owners")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY) // mappedBy deve ser igual ao campo na classe Car
     @JsonManagedReference
-    private List<Cars> cars;
-
+    private List<Car> car;
 }

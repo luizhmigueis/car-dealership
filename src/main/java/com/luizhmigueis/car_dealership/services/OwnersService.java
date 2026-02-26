@@ -1,11 +1,10 @@
 package com.luizhmigueis.car_dealership.services;
 
-import com.luizhmigueis.car_dealership.entities.Cars;
-import com.luizhmigueis.car_dealership.entities.Owners;
+import com.luizhmigueis.car_dealership.entities.Owner;
 import com.luizhmigueis.car_dealership.repositories.OwnersRepository;
-import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,29 +14,37 @@ public class OwnersService {
     @Autowired
     private OwnersRepository ownersRepository;
 
-    public Owners findById(Long id) {
+    public Owner findById(Long id) {
         return ownersRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Owner not found"));
 
     }
-    public void saveOwner(Owners owner){
+    public void saveOwner(Owner owner){
         ownersRepository.saveAndFlush(owner);
     }
-    public List<Owners> findAll(){
-        return ownersRepository.findAll();
+
+    @Transactional(readOnly = true) // <--- Adicione isso aqui
+    public List<Owner> findAll(){
+        List<Owner> list = ownersRepository.findAll();
+        // Opcional: Forçar o carregamento tocando na lista
+        list.forEach(owner -> owner.getCar().size());
+        return list;
     }
 
-    public Owners findByDriversLicense(Long driversLicense){
-        return ownersRepository.findByDriversLicense(driversLicense).orElseThrow(
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public Owner findByDriversLicense(Long driversLicense){
+        Owner owner = ownersRepository.findByDriversLicense(driversLicense).orElseThrow(
                 () -> new RuntimeException("Driver license not found")
         );
+        owner.getCar().size(); // Força o carregamento dos carros
+        return owner;
     }
     public void deleteByDriversLicense (Long driversLicense){
         ownersRepository.deleteByDriversLicense(driversLicense);
     }
-    public void updateOwnerByDriversLicense (Long driversLicense, Owners owner){
-        Owners ownerEntity = ownersRepository.findByDriversLicense(driversLicense).orElseThrow(() -> new RuntimeException("Id não encontrado"));
-        Owners ownerUpdated = Owners.builder()
+    public void updateOwnerByDriversLicense (Long driversLicense, Owner owner){
+        Owner ownerEntity = ownersRepository.findByDriversLicense(driversLicense).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+        Owner ownerUpdated = Owner.builder()
                 .id(ownerEntity.getId())
                 .name(owner.getName() != null ? owner.getName() : ownerEntity.getName())
                 .driversLicense(owner.getDriversLicense() != null ? owner.getDriversLicense() : ownerEntity.getDriversLicense())
