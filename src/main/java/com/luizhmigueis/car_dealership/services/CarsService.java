@@ -34,7 +34,6 @@ public class CarsService {
         Cars carUpdated = Cars.builder()
                 .id(carEntity.getId())
                 .carLicensePlate(car.getCarLicensePlate() != null ? car.getCarLicensePlate() : carEntity.getCarLicensePlate())
-                .ownerName(car.getOwnerName() != null ? car.getOwnerName() : carEntity.getOwnerName())
                 .brand(car.getBrand() != null ? car.getBrand() : carEntity.getBrand())
                 .model(car.getModel() != null ? car.getModel() : carEntity.getModel())
                 .yearModel(car.getYearModel() != null ? car.getYearModel() : carEntity.getYearModel())
